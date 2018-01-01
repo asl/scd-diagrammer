@@ -1,0 +1,18 @@
+{
+  "name": "scd-diagrammer",
+  "version": "0.0.1",
+  "description": "SCD crib diagrams (aka 'Piling diagrams') editor on top of draw.io",
+  "main": "index.html",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asl/scd-diagrammer.git"
+  },
+  "author": "Anton Korobeynikov",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/asl/scd-diagrammer/issues"
+  },
+  "homepage": "https://github.com/asl/scd-diagrammer#readme"
+}
