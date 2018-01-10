@@ -1,6 +1,0 @@
-[submodule "drawio"]
-	path = drawio
-	url = https://github.com/jgraph/drawio.git
-[submodule "mxgraph2"]
-	path = mxgraph2
-	url = https://bitbucket.org/jgraph/mxgraph2.git
