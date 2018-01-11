@@ -118,7 +118,7 @@ gulp.task('mxgraph-resources', function() {
 });
 
 gulp.task('drawio-resources', function() {
-    return gulp.src(["styles/*", "images/*", "resources/*"],
+    return gulp.src(["styles/*", "images/*", "resources/*", "shortcuts.svg"],
         { cwd : bases.drawio, base : bases.drawio })
         .pipe(gulp.dest(bases.dist))
 });
