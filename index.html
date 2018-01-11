@@ -1,0 +1,194 @@
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=5,IE=9" ><![endif]-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SCD Diagram Software</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="Description" content="SCD Diagrammer is free online diagram software for SCD diagrams">
+    <meta name="Keywords" content="scd diagrams">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#d89000">
+	<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="stylesheet" type="text/css" href="styles/grapheditor.css">
+	<link rel="shortcut icon" href="favicon.ico">
+	<style type="text/css">
+		body { overflow:hidden; }
+		div.picker { z-index: 10007; }
+		.geSidebarContainer .geTitle { color:#505050; }
+		.geSidebarContainer .geTitle input {
+			font-size:8pt;
+			color:#606060;
+		}
+		.geBlock {
+			z-index:-3;
+			margin:100px;
+			margin-top:40px;
+			margin-bottom:30px;
+			padding:20px;
+		}
+		.geBlock h1, .geBlock h2 {
+			margin-top:0px;
+			padding-top:0px;
+		}
+		.geEditor ::-webkit-scrollbar {
+		    width:12px;
+		    height:12px;
+		}
+		.geEditor ::-webkit-scrollbar-track {
+			background:whiteSmoke;
+			-webkit-box-shadow:inset 0 0 4px rgba(0,0,0,0.1);
+		}
+		.geEditor ::-webkit-scrollbar-thumb {
+			background:#c5c5c5;
+		    border-radius:10px;
+			border:whiteSmoke solid 3px;
+		}
+		.geEditor ::-webkit-scrollbar-thumb:hover {
+			background:#b5b5b5;
+		}
+		.geTemplate {
+			border:1px solid transparent;
+			display:inline-block;
+			_display:inline;
+			vertical-align:top;
+			border-radius:3px;
+			overflow:hidden;
+			font-size:14pt;
+			cursor:pointer;
+			margin:5px;
+		}
+	</style>
+
+    <!-- Workaround for binary XHR in IE 9/10, see App.loadUrl -->
+	<!--[if (IE 9)|(IE 10)]><!-->
+		<script type="text/vbscript">
+			Function mxUtilsBinaryToArray(Binary)
+				Dim i
+				ReDim byteArray(LenB(Binary))
+				For i = 1 To LenB(Binary)
+					byteArray(i-1) = AscB(MidB(Binary, i, 1))
+				Next
+				mxUtilsBinaryToArray = byteArray
+			End Function
+		</script>
+	<!--<![endif]-->
+
+    <script type="text/javascript">
+        var urlParams = (function() {
+            var result = new Object();
+            var params = window.location.search.slice(1).split('&');
+
+            for (var i = 0; i < params.length; i++) {
+                idx = params[i].indexOf('=');
+
+                if (idx > 0) {
+                    result[params[i].substring(0, idx)] = params[i].substring(idx + 1);
+                }
+            }
+
+            return result;
+        })();
+
+        // Forces CDN caches by passing URL parameters via URL hash
+        if (window.location.hash != null && window.location.hash.substring(0, 2) == '#P') {
+            try	{
+                urlParams = JSON.parse(decodeURIComponent(window.location.hash.substring(2)));
+
+                if (urlParams.hash != null)	{
+                    window.location.hash = urlParams.hash;
+                }
+            }
+            catch (e) {
+                // ignore
+            }
+        }
+
+		/**
+		 * Synchronously adds scripts to the page.
+		 */
+		function mxscript(src, onLoad, id, dataAppKey) {
+			if (onLoad != null) {
+				var s = document.createElement('script');
+				s.setAttribute('type', 'text/javascript');
+				s.setAttribute('src', src);
+				var r = false;
+				
+				if (id != null)	{
+					s.setAttribute('id', id);
+				}
+				
+				if (dataAppKey != null)	{
+					s.setAttribute('data-app-key', dataAppKey);
+				}
+				
+				s.onload = s.onreadystatechange = function() {
+					if (!r && (!this.readyState || this.readyState == 'complete')) {
+			      		r = true;
+			      		onLoad();
+					}
+			  	};
+			  	
+			  	var t = document.getElementsByTagName('script')[0];
+			  	t.parentNode.insertBefore(s, t);
+			} else {
+				document.write('<script src="' + src + '"' + ((id != null) ? ' id="' + id +'" ' : '') +
+					((dataAppKey != null) ? ' data-app-key="' + dataAppKey +'" ' : '') + '></scr' + 'ipt>');
+			}
+		}
+
+		// Checks for local storage
+		var isLocalStorage = false;
+		try {
+			isLocalStorage = urlParams['local'] != '1' && typeof(localStorage) != 'undefined';
+		} catch (e) {
+			// ignored
+		}
+
+		var t0 = new Date();
+
+		mxscript('js/app.min.js');
+		if (urlParams['offline'] == '1' || urlParams['appcache'] == '1') {
+				mxscript('js/stencils.min.js');
+		}
+
+		// Adds basic error handling
+		window.onerror = function()  {
+			var status = document.getElementById('geStatus');
+			
+			if (status != null) {
+				status.innerHTML = 'Page could not be loaded. Please try refreshing.';
+			}
+		};
+	</script>
+</head>
+
+<body class="geEditor">
+<div id="geInfo">
+	<div class="geBlock" style="text-align:center;min-width:50%;">
+		<h1>SCD Diagrammer</h1>
+		<h2 id="geStatus">Loading...</h2>
+		<p>
+			Please ensure JavaScript is enabled.
+		</p>
+	</div>
+</div>
+
+<script type="text/javascript">
+    EditorUi.prototype.footerHeight = 0;
+    App.prototype.enableLogging = false;
+
+    App.main(function(ui)  {
+        ui.actions.get('feedback').visible = false;
+        ui.actions.get('download').visible = false;
+
+        // Changes support link in Help menu
+        ui.actions.addAction('support...', function() {
+            window.open('https:/');
+        });
+    });</script>
+
+</body>
+</html>
