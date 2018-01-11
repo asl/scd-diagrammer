@@ -25,7 +25,7 @@ var sources = {
         "drawio/war/js/mxgraph/Shapes.js", "drawio/war/js/mxgraph/Actions.js",
         "drawio/war/js/mxgraph/Menus.js", "drawio/war/js/mxgraph/Format.js",
         "drawio/war/js/mxgraph/Toolbar.js", "drawio/war/js/mxgraph/Dialogs.js"],
-    sidebar : "drawio/war/js/diagramly/sidebar/Sidebar*.js",
+    sidebar : "drawio/war/js/diagramly/sidebar/Sidebar.js",
     baseapp: ["drawio/war/js/diagramly/DrawioFile.js",
         "drawio/war/js/diagramly/LocalFile.js",
         "drawio/war/js/diagramly/LocalLibrary.js",
