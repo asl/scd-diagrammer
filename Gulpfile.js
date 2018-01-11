@@ -78,8 +78,9 @@ var sources = {
         path.join(bases.dist, "diagramly.min.js"),
         path.join(bases.dist, "base-app.min.js"),
         path.join(bases.dist, "base-diagramly.min.js"),
-        path.join(bases.dist, "base-vsdx.min.js")
-        ]
+        path.join(bases.dist, "base-vsdx.min.js"),
+        path.join(bases.dist, "mxClient.js")
+    ]
 };
 
 // To get the dependencies for the project, read the file names by matching
@@ -119,6 +120,11 @@ gulp.task('mxgraph-resources', function() {
 gulp.task('drawio-resources', function() {
     return gulp.src(["styles/*", "images/*", "resources/*"],
         { cwd : bases.drawio, base : bases.drawio })
+        .pipe(gulp.dest(bases.dist))
+});
+
+gulp.task('diagrammer-resources', function() {
+    return gulp.src("*.html", { cwd : 'src' })
         .pipe(gulp.dest(bases.dist))
 });
 
@@ -193,7 +199,7 @@ gulp.task('base-app', function() {
 gulp.task("drawio", function() {
     return gulp.src(sources.drawio)
         .pipe(concat("app.min.js"))
-        .pipe(gulp.dest(bases.dist))
+        .pipe(gulp.dest(path.join(bases.dist, "js")))
 });
 
 gulp.task('default',
@@ -202,5 +208,5 @@ gulp.task('default',
                 'graph-stylesheet',
                 gulp.parallel('client', 'grapheditor', 'sidebar', 'base-app'),
                 'drawio',
-                gulp.parallel('mxgraph-resources', 'drawio-resources'),
+                gulp.parallel('mxgraph-resources', 'drawio-resources', 'diagrammer-resources'),
                 'clean-tmp'));
