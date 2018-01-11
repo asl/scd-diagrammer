@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SCD Diagram Software</title>
+    <title>SCD Diagramming Software</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="Description" content="SCD Diagrammer is free online diagram software for SCD diagrams">
-    <meta name="Keywords" content="scd diagrams">
+    <meta name="Description" content="SCD Diagrammer is free online  software for making scottish country dancing diagrams">
+    <meta name="Keywords" content="scd diagrams, scottish country dancing diagrams">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
 	<meta name="theme-color" content="#d89000">
@@ -177,7 +177,13 @@
 </div>
 
 <script type="text/javascript">
-App.main();
+    EditorUi.prototype.footerHeight = 0;
+    App.prototype.enableLogging = false;
+
+    App.main(function(ui)  {
+        ui.actions.get('feedback').visible = false;
+        ui.actions.get('download').visible = false;
+    });
 </script>
 
 </body>
