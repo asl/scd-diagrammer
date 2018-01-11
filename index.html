@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SCD Diagram Software</title>
+    <title>SCD Diagramming Software</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="Description" content="SCD Diagrammer is free online diagram software for SCD diagrams">
-    <meta name="Keywords" content="scd diagrams">
+    <meta name="Description" content="SCD Diagrammer is free online software for making scottish country dancing diagrams">
+    <meta name="Keywords" content="scd diagrams, scottish country dancing diagrams">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
 	<meta name="theme-color" content="#d89000">
@@ -147,9 +147,39 @@
 			// ignored
 		}
 
-		var t0 = new Date();
+		if (urlParams['dev'] == '1') {
+            // Request grapheditor/mxgraph sources in dev mode
+            var mxBasePath = '../mxgraph2/javascript/src/';
+            var drawDevUrl = '../drawio/war/';
+            var geBasePath = mxBasePath + '../examples/grapheditor/www/js/';
 
-		mxscript('js/app.min.js');
+            // Forces includes for dev environment in node.js
+            mxForceIncludes = true;
+
+            // Paths and files
+            SHAPES_PATH = drawDevUrl + 'shapes';
+            // Path for images inside the diagram
+            GRAPH_IMAGE_PATH = drawDevUrl + 'img';
+            IMAGE_PATH = drawDevUrl + 'images';
+            TEMPLATE_PATH = drawDevUrl + 'templates';
+
+            // Directory for i18 files and basename for main i18n file
+            RESOURCES_PATH = drawDevUrl + 'resources';
+
+            STYLE_PATH = drawDevUrl + 'styles';
+
+            mxscript(drawDevUrl + 'js/diagramly/Init.js');
+            mxscript(geBasePath + 'Init.js');
+            mxscript(mxBasePath + 'js/mxClient.js');
+
+            // Adds all JS code that depends on mxClient. This indirection via Devel.js is
+            // required in some browsers to make sure mxClient.js (and the files that it
+            // loads asynchronously) are available when the code loaded in Devel.js runs.
+            mxscript(drawDevUrl + 'js/diagramly/Devel.js');
+        } else {
+            mxscript('js/app.min.js');
+        }
+
 		if (urlParams['offline'] == '1' || urlParams['appcache'] == '1') {
 				mxscript('js/stencils.min.js');
 		}
@@ -177,18 +207,39 @@
 </div>
 
 <script type="text/javascript">
+    urlParams['tr'] = 0;
+    urlParams['gh'] = 0;
+
     EditorUi.prototype.footerHeight = 0;
     App.prototype.enableLogging = false;
 
+    Sidebar.prototype.init = function() {
+        // Uses search.xml index file instead (faster load times)
+        this.addStencilsToIndex = false;
+
+        // Contains additional tags for shapes
+        this.shapetags = {};
+
+        this.initPalettes();
+    }
+
+    Sidebar.prototype.initPalettes = function() {
+        this.addSearchPalette(true);
+        this.addGeneralPalette(true);
+        this.addMiscPalette(false);
+
+        // LATER: Check if conflicts with restore libs after loading file
+        this.showEntries();
+    }
+
     App.main(function(ui)  {
+        xml = '<mxlibrary>[{"xml":"5VTBTsQgEP0a7izsGs9tdU+e/AJsZwuRAgHWsn/vFFrXRjfrQT0oCcnMm3kD75FAeD2kvRdOPtgONOF3hNfe2liiIdWgNWFUdYQ3hDGKm7D7C9VNrlInPJj4FQIrhBehj1CQAoR40jPQe3t0cxv4CGl1VGuNgTaKp6WdfrxCbp3P34MdIPoTtoyqi7J07LaFJUH1cmHdFkyE+R5vzLMeDGZJn8vj1+UhQbmASTVKFeHRiXaqjPgkiMk44Oxmg6EIDoViclAJcH4VorfPUFttfR7FaV5YOSitF9xYMw0XWvUGU18EVp0IcprS0IvWvreQXbVwseu7Ldz+cQvT2qpfcHT3PxzlNz/lKKbnHzLXVh/oKw==","w":54,"h":18},{"xml":"5VTBTsQgEP0a7izsmj231T158gvYdrYQKRBgbfv3Tgt1bXSj0ehBSUhm3swbeI8EwstuOHjh5L1tQBN+S3jprY0p6oYStCaMqobwijBGcRN2d6W6mavUCQ8mfobAEuFJ6DMkJAEhjjoDrbdnl9vARxhWR9XWGKijOC7t9O0V5tZ8/gFsB9GP2NKrJsrcsU8sCaqVmbXbJkyEfI8X5kUPBlnS+/L4x/KQoFzApOilivDgRD1VenwSxGTscHa1wVAEh0IxOakBcH4RorePUFpt/TyK03lh5aS0XnBjzTRcaNUaTH0SWDQiyGlKRa9a+9pC9iULF+w7Fm7/uIXj2qpfcHT3PxzlNz/lKKaXH3KurT7QZw==","w":18,"h":54},{"xml":"5VTBTsQgFPwa7ixU47mt7smTX4Dt20KkQIC17d/7Wqhrs27WRONBmzRh5r15MNMGwqt+3Hvh5KNtQRN+T3jlrY1p1Y8VaE0YVS3hNWGM4kvYw4XqbqlSJzyY+BUBS4JXoY+QmESEOOlMdN4eXW4DH2HcbNVYY6CJ4nltp+dHWFrz/nuwPUQ/Ycug2ihTR1EklQTVybjlRMjneFee/OAiW/rcHr9uDwXKBQTlIFWEJyeauTLgJ0FOxh5n1ztciuDQKIKDGgHnlyF6+wKV1dYvozhdHqwclNYrb6yZhwutOoPQJ4NlK4Kcp9T0YrQfI2RXI9zdnUe4ct+JsPjjEa6C/KtMW/gLAd/8j4DZ7SbgFf58wAhP9+dS21yvbw==","w":44,"h":44},{"xml":"5VTBboQgEP0a7gq26Vlt97SnfgHVWSFFIMBW/fuOgt01u5s2adpDa0Iy82bewHsSCKv6cee4FXvTgiLskbDKGRNi1I8VKEVoJlvCakJphovQpxvVfKlmljvQ4SsEGglvXB0hIhHwYVIJ6Jw52tQGLsC42aoxWkMT+Mvanl0eYWlN++/A9BDchC2DbIOIHUURWQJkJ8IW4z6d44N50oNBknRdHvtcHhKk9ZiUg5ABni1v5sqAvwQxEXqcXecYcm9RKCYHOQLOL31w5hUqo4xbRrFs+bBykEqtuDZ6Hs6V7DSmLgosW+7FPKXOblp7biG9bmEi0PvIOHM0f7h0dMW+42jxPxzN082ZtukvGHz3xw2efvrKYnp6P5fa5nl9Bw==","w":44,"h":44}]</mxlibrary>';
+        ui.loadLibrary(new StorageLibrary(this, xml, "SCD Reels"));
+
         ui.actions.get('feedback').visible = false;
         ui.actions.get('download').visible = false;
-
-        // Changes support link in Help menu
-        ui.actions.addAction('support...', function() {
-            window.open('https:/');
-        });
-    });</script>
+    });
+</script>
 
 </body>
 </html>
