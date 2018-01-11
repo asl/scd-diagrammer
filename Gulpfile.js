@@ -7,8 +7,7 @@ var gulp = require("gulp"),
     change = require("gulp-change"),
     rename = require("gulp-rename"),
     clean = require("gulp-clean"),
-    mxClientContent,
-    deps;
+    deploy = require('gulp-gh-pages');
 
 var bases = {
     mxgraph: 'mxgraph2/javascript/src',
@@ -86,14 +85,19 @@ var sources = {
 // To get the dependencies for the project, read the file names by matching
 // mxClient.include([...]) in mxClient.js. This is not perfect, but the list is
 // required in mxClient.js for compatibility.
-mxClientContent = fs.readFileSync(
+var mxClientContent = fs.readFileSync(
     path.join(process.cwd(), bases.mxgraph, "js/mxClient.js"),
     "utf8"
 );
-deps = mxClientContent.match(/mxClient\.include\([^"']+["'](.*?)["']/gi).map(function (str) {
+var deps = mxClientContent.match(/mxClient\.include\([^"']+["'](.*?)["']/gi).map(function (str) {
     return bases.mxgraph + str.match(/mxClient\.include\([^"']+["'](.*?)["']/)[1];
 });
 deps = [path.join(bases.mxgraph, "js/mxClient.js")].concat(deps.slice(0));
+
+gulp.task('deploy', function() {
+    return gulp.src(path.join(bases.dist, '/**/*'))
+        .pipe(deploy());
+});
 
 gulp.task('clean', function() {
     return gulp.src(bases.dist, {allowEmpty : true})
