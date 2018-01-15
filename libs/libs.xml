@@ -1,0 +1,5 @@
+<libraries>
+    <library url="libs/SCD - Symbols.xml" title = "SCD Symbols"/>
+    <library url="libs/SCD - Figures.xml" title = "SCD Figures"/>
+    <library url="libs/SCD - General.xml" title = "SCD General"/>
+</libraries>
