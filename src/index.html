@@ -13,6 +13,7 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="stylesheet" type="text/css" href="styles/grapheditor.css">
+    <link rel="stylesheet" type="text/css" href="../drawio/war/styles/grapheditor.css">
 	<link rel="shortcut icon" href="favicon.ico">
 	<style type="text/css">
 		body { overflow:hidden; }
@@ -207,10 +208,11 @@
 </div>
 
 <script type="text/javascript">
-    urlParams['tr'] = 0;
-    urlParams['gh'] = 0;
-    urlParams['gapi'] = 0;
-    urlParams['od'] = 0;
+    urlParams['tr'] = '0';
+    urlParams['gh'] = '0';
+    urlParams['gapi'] = '0';
+    urlParams['db'] = '0';
+    urlParams['od'] = '0';
 
     EditorUi.prototype.footerHeight = 0;
     App.prototype.enableLogging = false;
@@ -234,9 +236,34 @@
         this.showEntries();
     }
 
-    App.main(function(ui)  {
-        xml = '<mxlibrary>[{"xml":"5VTBTsQgEP0a7izsGs9tdU+e/AJsZwuRAgHWsn/vFFrXRjfrQT0oCcnMm3kD75FAeD2kvRdOPtgONOF3hNfe2liiIdWgNWFUdYQ3hDGKm7D7C9VNrlInPJj4FQIrhBehj1CQAoR40jPQe3t0cxv4CGl1VGuNgTaKp6WdfrxCbp3P34MdIPoTtoyqi7J07LaFJUH1cmHdFkyE+R5vzLMeDGZJn8vj1+UhQbmASTVKFeHRiXaqjPgkiMk44Oxmg6EIDoViclAJcH4VorfPUFttfR7FaV5YOSitF9xYMw0XWvUGU18EVp0IcprS0IvWvreQXbVwseu7Ldz+cQvT2qpfcHT3PxzlNz/lKKbnHzLXVh/oKw==","w":54,"h":18},{"xml":"5VTBTsQgEP0a7izsmj231T158gvYdrYQKRBgbfv3Tgt1bXSj0ehBSUhm3swbeI8EwstuOHjh5L1tQBN+S3jprY0p6oYStCaMqobwijBGcRN2d6W6mavUCQ8mfobAEuFJ6DMkJAEhjjoDrbdnl9vARxhWR9XWGKijOC7t9O0V5tZ8/gFsB9GP2NKrJsrcsU8sCaqVmbXbJkyEfI8X5kUPBlnS+/L4x/KQoFzApOilivDgRD1VenwSxGTscHa1wVAEh0IxOakBcH4RorePUFpt/TyK03lh5aS0XnBjzTRcaNUaTH0SWDQiyGlKRa9a+9pC9iULF+w7Fm7/uIXj2qpfcHT3PxzlNz/lKKaXH3KurT7QZw==","w":18,"h":54},{"xml":"5VTBTsQgFPwa7ixU47mt7smTX4Dt20KkQIC17d/7Wqhrs27WRONBmzRh5r15MNMGwqt+3Hvh5KNtQRN+T3jlrY1p1Y8VaE0YVS3hNWGM4kvYw4XqbqlSJzyY+BUBS4JXoY+QmESEOOlMdN4eXW4DH2HcbNVYY6CJ4nltp+dHWFrz/nuwPUQ/Ycug2ihTR1EklQTVybjlRMjneFee/OAiW/rcHr9uDwXKBQTlIFWEJyeauTLgJ0FOxh5n1ztciuDQKIKDGgHnlyF6+wKV1dYvozhdHqwclNYrb6yZhwutOoPQJ4NlK4Kcp9T0YrQfI2RXI9zdnUe4ct+JsPjjEa6C/KtMW/gLAd/8j4DZ7SbgFf58wAhP9+dS21yvbw==","w":44,"h":44},{"xml":"5VTBboQgEP0a7gq26Vlt97SnfgHVWSFFIMBW/fuOgt01u5s2adpDa0Iy82bewHsSCKv6cee4FXvTgiLskbDKGRNi1I8VKEVoJlvCakJphovQpxvVfKlmljvQ4SsEGglvXB0hIhHwYVIJ6Jw52tQGLsC42aoxWkMT+Mvanl0eYWlN++/A9BDchC2DbIOIHUURWQJkJ8IW4z6d44N50oNBknRdHvtcHhKk9ZiUg5ABni1v5sqAvwQxEXqcXecYcm9RKCYHOQLOL31w5hUqo4xbRrFs+bBykEqtuDZ6Hs6V7DSmLgosW+7FPKXOblp7biG9bmEi0PvIOHM0f7h0dMW+42jxPxzN082ZtukvGHz3xw2efvrKYnp6P5fa5nl9Bw==","w":44,"h":44}]</mxlibrary>';
-        ui.loadLibrary(new StorageLibrary(this, xml, "SCD Reels"));
+    var libs = [];
+    var req = mxUtils.load("libs/libs.xml")
+    if (req.getStatus() >= 200 && req.getStatus() <= 299) {
+        var node = req.getDocumentElement().firstChild;
+        while (node != null) {
+            if (typeof(node.getAttribute) !== 'undefined') {
+                var url = node.getAttribute('url');
+
+                if (url != null) {
+                    libs.push({
+                        url: node.getAttribute('url'),
+                        title: node.getAttribute('title')
+                    });
+                }
+            }
+
+            node = node.nextSibling;
+        }
+    }
+
+    App.main(function(ui) {
+        for (var idx in libs) {
+            var lib = libs[idx]
+            var req = mxUtils.load(lib['url'])
+            if (req.getStatus() >= 200 && req.getStatus() <= 299) {
+                ui.loadLibrary(new UrlLibrary(ui, req.getText(), lib['title']))
+            }
+        }
 
         ui.actions.get('feedback').visible = false;
         ui.actions.get('download').visible = false;
