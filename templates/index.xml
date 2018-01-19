@@ -1,3 +1,5 @@
 <templates>
     <template url="examples/GroundhogDay.xml" libs="general" title="Groundhog Day"/>
+    <template url="examples/DoNotStop.xml" libs="general" title="Do not Stop"/>
+    <template url="examples/RubikCube.xml" libs="general" title="Rubik's Cube"/>
 </templates>
