@@ -128,7 +128,7 @@ gulp.task('drawio-resources', function() {
 });
 
 gulp.task('diagrammer-resources', function() {
-    return gulp.src(["*.html", "libs/*", "images/*"],
+    return gulp.src(["*.html", "libs/*", "images/*", "templates/**"],
                      { cwd : 'src', base : 'src' })
         .pipe(gulp.dest(bases.dist))
 });
