@@ -7,6 +7,8 @@ var gulp = require("gulp"),
     change = require("gulp-change"),
     rename = require("gulp-rename"),
     clean = require("gulp-clean"),
+    git = require('git-rev-sync'),
+    replace = require('gulp-replace'),
     deploy = require('gulp-gh-pages');
 
 var bases = {
@@ -94,6 +96,14 @@ var deps = mxClientContent.match(/mxClient\.include\([^"']+["'](.*?)["']/gi).map
 });
 deps = [path.join(bases.mxgraph, "js/mxClient.js")].concat(deps.slice(0));
 
+var DRAWIO_VERSION =fs.readFileSync(
+    path.join(process.cwd(), bases.drawio, "../VERSION"),
+    "utf8"
+);
+
+var gitrev = git.short();
+log("Building from git revision " + gitrev);
+
 gulp.task('deploy', function() {
     return gulp.src(path.join(bases.dist, '/**/*'))
         .pipe(deploy());
@@ -128,8 +138,15 @@ gulp.task('drawio-resources', function() {
 });
 
 gulp.task('diagrammer-resources', function() {
-    return gulp.src(["*.html", "libs/*", "images/*", "templates/**"],
+    return gulp.src(["images/*", "templates/**"],
                      { cwd : 'src', base : 'src' })
+        .pipe(gulp.dest(bases.dist))
+});
+
+gulp.task('diagrammer-app', function() {
+    return gulp.src(["*.html", "libs/*"],
+        { cwd : 'src', base : 'src' })
+        .pipe(replace('@SCDD-REV@', gitrev))
         .pipe(gulp.dest(bases.dist))
 });
 
@@ -197,6 +214,7 @@ gulp.task('base-app', function() {
                 // warning_level: 'VERBOSE'
             }
         })))
+        .pipe(replace('@DRAWIO-VERSION@', DRAWIO_VERSION))
         .pipe(gulp.dest(bases.dist))
 });
 
@@ -211,7 +229,7 @@ gulp.task('default',
     gulp.series('clean',
                 'mxgraph',
                 'graph-stylesheet',
-                gulp.parallel('client', 'grapheditor', 'sidebar', 'base-app'),
+                gulp.parallel('client', 'grapheditor', 'sidebar', 'base-app', 'diagrammer-app'),
                 'drawio',
                 gulp.parallel('mxgraph-resources', 'drawio-resources', 'diagrammer-resources'),
                 'clean-tmp'));
