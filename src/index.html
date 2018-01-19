@@ -233,8 +233,9 @@
         this.showEntries();
     }
 
+    mxscript("libs/EmbeddedLibrary.js");
     var libs = [];
-    var req = mxUtils.load("libs/libs.xml")
+    var req = mxUtils.load("libs/libs.xml");
     if (req.getStatus() >= 200 && req.getStatus() <= 299) {
         var node = req.getDocumentElement().firstChild;
         while (node != null) {
