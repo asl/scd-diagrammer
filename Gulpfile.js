@@ -122,13 +122,13 @@ gulp.task('mxgraph-resources', function() {
 });
 
 gulp.task('drawio-resources', function() {
-    return gulp.src(["styles/*", "images/*", "resources/*", "shortcuts.svg"],
+    return gulp.src(["styles/*", "images/*", "!images/sidebar-*.png", "resources/*", "shortcuts.svg"],
         { cwd : bases.drawio, base : bases.drawio })
         .pipe(gulp.dest(bases.dist))
 });
 
 gulp.task('diagrammer-resources', function() {
-    return gulp.src(["*.html", "libs/*"],
+    return gulp.src(["*.html", "libs/*", "images/*"],
                      { cwd : 'src', base : 'src' })
         .pipe(gulp.dest(bases.dist))
 });
