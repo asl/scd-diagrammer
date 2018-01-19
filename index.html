@@ -10,8 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
 	<meta name="theme-color" content="#d89000">
-	<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="images/scddfavicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="images/scddfavicon-16x16.png">
+
     <link rel="stylesheet" type="text/css" href="styles/grapheditor.css">
     <link rel="stylesheet" type="text/css" href="../drawio/war/styles/grapheditor.css">
 	<link rel="shortcut icon" href="favicon.ico">
@@ -83,8 +84,7 @@
             var params = window.location.search.slice(1).split('&');
 
             for (var i = 0; i < params.length; i++) {
-                idx = params[i].indexOf('=');
-
+                var idx = params[i].indexOf('=');
                 if (idx > 0) {
                     result[params[i].substring(0, idx)] = params[i].substring(idx + 1);
                 }
@@ -154,7 +154,7 @@
             var drawDevUrl = '../drawio/war/';
             var geBasePath = mxBasePath + '../examples/grapheditor/www/js/';
 
-            // Forces includes for dev environment in node.js
+            // Forces includes for dev environment
             mxForceIncludes = true;
 
             // Paths and files
@@ -180,10 +180,6 @@
         } else {
             mxscript('js/app.min.js');
         }
-
-		if (urlParams['offline'] == '1' || urlParams['appcache'] == '1') {
-				mxscript('js/stencils.min.js');
-		}
 
 		// Adds basic error handling
 		window.onerror = function()  {
@@ -213,6 +209,7 @@
     urlParams['gapi'] = '0';
     urlParams['db'] = '0';
     urlParams['od'] = '0';
+    urlParams['browser'] = '1';
 
     EditorUi.prototype.footerHeight = 0;
     App.prototype.enableLogging = false;
@@ -236,8 +233,9 @@
         this.showEntries();
     }
 
+    mxscript("libs/EmbeddedLibrary.js");
     var libs = [];
-    var req = mxUtils.load("libs/libs.xml")
+    var req = mxUtils.load("libs/libs.xml");
     if (req.getStatus() >= 200 && req.getStatus() <= 299) {
         var node = req.getDocumentElement().firstChild;
         while (node != null) {
@@ -256,18 +254,104 @@
         }
     }
 
+    /**
+     * Constructs a new about dialog
+     */
+    var SCDAboutDialog = function(editorUi) {
+        var div = document.createElement('div');
+        div.style.marginTop = '6px';
+        div.setAttribute('align', 'center');
+
+        var img = document.createElement('img');
+        img.style.border = '0px';
+
+        if (mxClient.IS_SVG) {
+            img.setAttribute('width', '216');
+            img.setAttribute('height', '180');
+            img.style.width = '216x';
+            img.style.height = '180px';
+            img.setAttribute('src', IMAGE_PATH + '/scddlogo-text-bottom.svg');
+        } else {
+            img.setAttribute('width', '216');
+            img.setAttribute('height', '180');
+            img.style.width = '216px';
+            img.style.height = '180px';
+            img.setAttribute('src', IMAGE_PATH + '/scddlogo-text-bottom.png');
+        }
+
+        div.appendChild(img);
+        mxUtils.br(div);
+
+        var v = document.createElement('small');
+        v.innerHTML = 'v ' + EditorUi.VERSION;
+        v.style.color = '#505050';
+        div.appendChild(v);
+
+        mxUtils.br(div);
+        mxUtils.br(div);
+
+        var small = document.createElement('small');
+        small.style.color = '#505050';
+        small.innerHTML = '&copy; 2018 <a href="mailto:anton@korobeynikov.info" style="color:inherit;" target="_blank">Anton Korobeynikov</a>.';
+        div.appendChild(small);
+
+        mxEvent.addListener(div, 'click', function(e)
+        {
+            if (mxEvent.getSource(e).nodeName != 'A')
+            {
+                editorUi.hideDialog();
+            }
+        });
+
+        this.container = div;
+    };
+
+    Editor.prototype.appName = 'SCD Diagrammer';
+
     App.main(function(ui) {
         for (var idx in libs) {
-            var lib = libs[idx]
-            var req = mxUtils.load(lib['url'])
+            var lib = libs[idx];
+            var req = mxUtils.load(lib['url']);
             if (req.getStatus() >= 200 && req.getStatus() <= 299) {
-                ui.loadLibrary(new UrlLibrary(ui, req.getText(), lib['title']))
+                ui.loadLibrary(new EmbeddedLibrary(ui, req.getText(), lib['title']))
             }
         }
 
-        ui.actions.get('feedback').visible = false;
+        ui.appIcon.style.backgroundColor = '#4C0099';
+        var logo = (!mxClient.IS_SVG) ? 'url(\'' + IMAGE_PATH + '/scddlogo-white.png\')' : 'url(\'' + IMAGE_PATH + '/scddlogo-white.svg\')';
+        ui.appIcon.style.backgroundImage = logo;
+        mxEvent.addListener(ui.appIcon, 'mouseout', mxUtils.bind(this, function()
+        {
+            ui.appIcon.style.backgroundImage = logo;
+        }));
+
+        if (ui.icon != null) {
+            ui.icon.setAttribute('src', IMAGE_PATH + '/scddfavicon-16x16.png');
+        }
+
         ui.actions.get('download').visible = false;
-    });
+
+        var showingAbout = false;
+        ui.actions.put('scdabout', new Action('About SCD Diagrammer...', function() {
+            if (!showingAbout) {
+                ui.showDialog(new SCDAboutDialog(ui).container, 300, 252, true, true, function() {
+                    showingAbout = false;
+                });
+
+                showingAbout = true;
+            }
+        }));
+
+        ui.menus.get('help').funct = mxUtils.bind(ui.menus, function(menu, parent) {
+            if (ui.isOffline()) {
+                this.addMenuItems(menu, ['about', 'scdabout']);
+            } else {
+                this.addMenuItems(menu, ['userManual', 'keyboardShortcuts', '-']);
+                this.addMenuItems(menu, ['about', 'scdabout']);
+            }
+        });
+
+        });
 </script>
 
 </body>
