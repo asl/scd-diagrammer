@@ -254,18 +254,104 @@
         }
     }
 
+    /**
+     * Constructs a new about dialog
+     */
+    var SCDAboutDialog = function(editorUi) {
+        var div = document.createElement('div');
+        div.style.marginTop = '6px';
+        div.setAttribute('align', 'center');
+
+        var img = document.createElement('img');
+        img.style.border = '0px';
+
+        if (mxClient.IS_SVG) {
+            img.setAttribute('width', '216');
+            img.setAttribute('height', '180');
+            img.style.width = '216x';
+            img.style.height = '180px';
+            img.setAttribute('src', IMAGE_PATH + '/scddlogo-text-bottom.svg');
+        } else {
+            img.setAttribute('width', '216');
+            img.setAttribute('height', '180');
+            img.style.width = '216px';
+            img.style.height = '180px';
+            img.setAttribute('src', IMAGE_PATH + '/scddlogo-text-bottom.png');
+        }
+
+        div.appendChild(img);
+        mxUtils.br(div);
+
+        var v = document.createElement('small');
+        v.innerHTML = 'v ' + EditorUi.VERSION;
+        v.style.color = '#505050';
+        div.appendChild(v);
+
+        mxUtils.br(div);
+        mxUtils.br(div);
+
+        var small = document.createElement('small');
+        small.style.color = '#505050';
+        small.innerHTML = '&copy; 2018 <a href="mailto:anton@korobeynikov.info" style="color:inherit;" target="_blank">Anton Korobeynikov</a>.';
+        div.appendChild(small);
+
+        mxEvent.addListener(div, 'click', function(e)
+        {
+            if (mxEvent.getSource(e).nodeName != 'A')
+            {
+                editorUi.hideDialog();
+            }
+        });
+
+        this.container = div;
+    };
+
+    Editor.prototype.appName = 'SCD Diagrammer';
+
     App.main(function(ui) {
         for (var idx in libs) {
-            var lib = libs[idx]
-            var req = mxUtils.load(lib['url'])
+            var lib = libs[idx];
+            var req = mxUtils.load(lib['url']);
             if (req.getStatus() >= 200 && req.getStatus() <= 299) {
-                ui.loadLibrary(new UrlLibrary(ui, req.getText(), lib['title']))
+                ui.loadLibrary(new EmbeddedLibrary(ui, req.getText(), lib['title']))
             }
         }
 
-        ui.actions.get('feedback').visible = false;
+        ui.appIcon.style.backgroundColor = '#4C0099';
+        var logo = (!mxClient.IS_SVG) ? 'url(\'' + IMAGE_PATH + '/scddlogo-white.png\')' : 'url(\'' + IMAGE_PATH + '/scddlogo-white.svg\')';
+        ui.appIcon.style.backgroundImage = logo;
+        mxEvent.addListener(ui.appIcon, 'mouseout', mxUtils.bind(this, function()
+        {
+            ui.appIcon.style.backgroundImage = logo;
+        }));
+
+        if (ui.icon != null) {
+            ui.icon.setAttribute('src', IMAGE_PATH + '/scddfavicon-16x16.png');
+        }
+
         ui.actions.get('download').visible = false;
-    });
+
+        var showingAbout = false;
+        ui.actions.put('scdabout', new Action('About SCD Diagrammer...', function() {
+            if (!showingAbout) {
+                ui.showDialog(new SCDAboutDialog(ui).container, 300, 252, true, true, function() {
+                    showingAbout = false;
+                });
+
+                showingAbout = true;
+            }
+        }));
+
+        ui.menus.get('help').funct = mxUtils.bind(ui.menus, function(menu, parent) {
+            if (ui.isOffline()) {
+                this.addMenuItems(menu, ['about', 'scdabout']);
+            } else {
+                this.addMenuItems(menu, ['userManual', 'keyboardShortcuts', '-']);
+                this.addMenuItems(menu, ['about', 'scdabout']);
+            }
+        });
+
+        });
 </script>
 
 </body>
