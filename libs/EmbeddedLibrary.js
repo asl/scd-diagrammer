@@ -32,8 +32,7 @@ EmbeddedLibrary.prototype.saveAs = function(title, success, error)  {
 };
 
 /**
- * Returns the location as a new object.
- * @type mx.Point
+ * Overridden to avoid updating data with current file.
  */
 EmbeddedLibrary.prototype.open = function() {
     // Do nothing - this should never be called
