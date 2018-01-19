@@ -84,8 +84,7 @@
             var params = window.location.search.slice(1).split('&');
 
             for (var i = 0; i < params.length; i++) {
-                idx = params[i].indexOf('=');
-
+                var idx = params[i].indexOf('=');
                 if (idx > 0) {
                     result[params[i].substring(0, idx)] = params[i].substring(idx + 1);
                 }
@@ -155,7 +154,7 @@
             var drawDevUrl = '../drawio/war/';
             var geBasePath = mxBasePath + '../examples/grapheditor/www/js/';
 
-            // Forces includes for dev environment in node.js
+            // Forces includes for dev environment
             mxForceIncludes = true;
 
             // Paths and files
@@ -181,10 +180,6 @@
         } else {
             mxscript('js/app.min.js');
         }
-
-		if (urlParams['offline'] == '1' || urlParams['appcache'] == '1') {
-				mxscript('js/stencils.min.js');
-		}
 
 		// Adds basic error handling
 		window.onerror = function()  {
@@ -214,6 +209,7 @@
     urlParams['gapi'] = '0';
     urlParams['db'] = '0';
     urlParams['od'] = '0';
+    urlParams['browser'] = '1';
 
     EditorUi.prototype.footerHeight = 0;
     App.prototype.enableLogging = false;
