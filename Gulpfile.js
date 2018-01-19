@@ -119,9 +119,14 @@ gulp.task('clean-tmp', function() {
         .pipe(clean());
 });
 
-gulp.task('mxgraph', function() {
+gulp.task('mxgraph-src', function() {
     return gulp.src(deps)
         .pipe(concat("mxClient.js"))
+        .pipe(gulp.dest(bases.dist))
+});
+
+gulp.task('mxgraph', function() {
+    return gulp.src('drawio/etc/mxgraph/mxClient.js')
         .pipe(gulp.dest(bases.dist))
 });
 
@@ -168,6 +173,7 @@ gulp.task('client', function() {
         .pipe(closure_compiler(({
             compilerPath : "drawio/etc/build/compiler.jar",
             fileName : "client.min.js",
+            continueWithWarnings: true,
             compilerFlags: {
                 compilation_level: 'SIMPLE_OPTIMIZATIONS',
                 // warning_level: 'VERBOSE'
