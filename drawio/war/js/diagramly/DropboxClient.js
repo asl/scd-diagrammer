@@ -19,6 +19,8 @@ mxUtils.extend(DropboxClient, DrawioClient);
  */
 DropboxClient.prototype.appPath = '/drawio/';
 
+DropboxClient.prototype.redirectUri = 'https://' + window.location.host + '/dropbox.html';
+
 /**
  * Executes the first step for connecting to Google Drive.
  */
@@ -112,8 +114,7 @@ DropboxClient.prototype.authenticate = function(success, error)
 			
 			this.ui.showAuthDialog(this, true, mxUtils.bind(this, function(remember, authSuccess)
 			{
-				var win = window.open(this.client.getAuthenticationUrl('https://' +
-					window.location.host + '/dropbox.html'), 'dbauth');
+				var win = window.open(this.client.getAuthenticationUrl(this.redirectUri), 'dbauth');
 				
 				if (win != null)
 				{
