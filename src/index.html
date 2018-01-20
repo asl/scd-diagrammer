@@ -208,10 +208,12 @@
     urlParams['gh'] = '0';
     urlParams['gapi'] = '0';
     urlParams['browser'] = '1';
+    PREFIX = 'https://asl.github.io/scd-diagrammer/'
 
     EditorUi.prototype.footerHeight = 0;
     App.prototype.enableLogging = false;
 
+    // Integrations
     App.DROPBOX_APPKEY = 'pp9eu4pveog9upu';
     DropboxClient.prototype.appPath = '/scdd/';
     // HACK-HACK-HACK
@@ -221,8 +223,8 @@
         DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
         OneDriveClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/onedrive3.html';
     } else {
-        DropboxClient.prototype.redirectUri = window.location.href + 'dropbox.html';
-        OneDriveClient.prototype.redirectUri = window.location.href + 'onedrive3.html';
+        DropboxClient.prototype.redirectUri = PREFIX + 'dropbox.html';
+        OneDriveClient.prototype.redirectUri = PREFIX + 'onedrive3.html';
     }
 
     Sidebar.prototype.init = function() {
