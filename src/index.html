@@ -378,6 +378,11 @@
         }
 
         ui.actions.get('download').visible = false;
+        ui.actions.put('offline', new Action(mxResources.get('offline') + '...',
+            function() {
+                ui.openLink(PREFIX + 'app.html')
+        }));
+
 
         var showingAbout = false;
         ui.actions.put('scdabout', new Action('About SCD Diagrammer...', function() {
