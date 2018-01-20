@@ -331,7 +331,7 @@
         mxUtils.br(div);
 
         var v = document.createElement('small');
-        v.innerHTML = 'rev 29a9062';
+        v.innerHTML = 'rev 13e1b7b';
         v.style.color = '#505050';
         div.appendChild(v);
 
@@ -378,6 +378,11 @@
         }
 
         ui.actions.get('download').visible = false;
+        ui.actions.put('offline', new Action(mxResources.get('offline') + '...',
+            function() {
+                ui.openLink(PREFIX + 'app.html')
+        }));
+
 
         var showingAbout = false;
         ui.actions.put('scdabout', new Action('About SCD Diagrammer...', function() {
