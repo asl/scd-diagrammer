@@ -207,12 +207,15 @@
     urlParams['tr'] = '0';
     urlParams['gh'] = '0';
     urlParams['gapi'] = '0';
-    urlParams['db'] = '0';
     urlParams['od'] = '0';
     urlParams['browser'] = '1';
 
     EditorUi.prototype.footerHeight = 0;
     App.prototype.enableLogging = false;
+
+    App.DROPBOX_APPKEY = 'pp9eu4pveog9upu';
+    DropboxClient.prototype.appPath = '/scdd/';
+    DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
 
     Sidebar.prototype.init = function() {
         // Uses search.xml index file instead (faster load times)
@@ -283,7 +286,7 @@
         mxUtils.br(div);
 
         var v = document.createElement('small');
-        v.innerHTML = 'rev 69385a9';
+        v.innerHTML = 'rev a0f6279';
         v.style.color = '#505050';
         div.appendChild(v);
 
