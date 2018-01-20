@@ -221,8 +221,8 @@
         DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
         OneDriveClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/onedrive3.html';
     } else {
-        DropboxClient.prototype.redirectUri = window.location.href + '/dropbox.html';
-        OneDriveClient.prototype.redirectUri = window.location.href + '/onedrive3.html';
+        DropboxClient.prototype.redirectUri = window.location.href + 'dropbox.html';
+        OneDriveClient.prototype.redirectUri = window.location.href + 'onedrive3.html';
     }
 
     Sidebar.prototype.init = function() {
