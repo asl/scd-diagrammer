@@ -91,6 +91,7 @@ chromeApp=Chrome app
 compressed=Komprimiert
 commitMessage=Commit-Nachricht
 csv=CSV
+dark=Dark
 draftFound=Ein Entwurf für '{1}' wurde gefunden. Setzen Sie die Bearbeitung fort oder verwerfen Sie die Änderungen.
 dragAndDropNotSupported=Drag and drop not supported for images. Would you like to import instead?
 dropboxCharsNotAllowed=Unzulässige Zeichen: \ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=Ihre Sitzung wurde beendet. Bitte <a target='_blan
 errorSendingFeedback=Fehler beim versenden des Feedback.
 errorUpdatingPreview=Fehler beim aktualisieren der Vorschau.
 exit=Beenden
+exitFullscreen=Vollbildmodus verlassen
 exitGroup=Aus Gruppe heraus
 expand=Ausklappen
 export=Exportieren

@@ -91,6 +91,7 @@ chromeApp=Chrome应用软件
 compressed=已压缩
 commitMessage=提交信息
 csv=CSV
+dark=Dark
 draftFound={1}的草图已找到。载入其进行编辑或丢弃以继续。
 dragAndDropNotSupported=暂不支持图片拖放功能。要选择导入选项吗？
 dropboxCharsNotAllowed=系统不允许使用下列字符：\ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=您的会话已经结束。请<a target='_blank'hr
 errorSendingFeedback=发送反馈出错。
 errorUpdatingPreview=更新预览出错。
 exit=退出
+exitFullscreen=Exit Fullscreen
 exitGroup=退出编辑组
 expand=展开
 export=导出

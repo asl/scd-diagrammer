@@ -14,7 +14,7 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="images/scddfavicon-16x16.png">
 
     <link rel="stylesheet" type="text/css" href="styles/grapheditor.css">
-    <link rel="stylesheet" type="text/css" href="../drawio/war/styles/grapheditor.css">
+    <link rel="stylesheet" type="text/css" href="../drawio/src/main/webapp/styles/grapheditor.css">
 	<link rel="shortcut icon" href="favicon.ico">
 	<style type="text/css">
 		body { overflow:hidden; }
@@ -151,7 +151,7 @@
 		if (urlParams['dev'] == '1') {
             // Request grapheditor/mxgraph sources in dev mode
             var mxBasePath = '../mxgraph2/javascript/src/';
-            var drawDevUrl = '../drawio/war/';
+            var drawDevUrl = '../drawio/src/main/webapp/';
             var geBasePath = mxBasePath + '../examples/grapheditor/www/js/';
 
             // Forces includes for dev environment
@@ -331,7 +331,7 @@
         mxUtils.br(div);
 
         var v = document.createElement('small');
-        v.innerHTML = 'rev 59a36f0';
+        v.innerHTML = 'rev 29a9062';
         v.style.color = '#505050';
         div.appendChild(v);
 

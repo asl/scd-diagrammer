@@ -91,6 +91,7 @@ chromeApp=Aplikasi Chrome
 compressed=Mampat
 commitMessage=Hantar Mesej
 csv=CSV
+dark=Dark
 draftFound=Draf bagi '{1}' telah dijumpai. Muat ia ke dalam editor atau buang untuk meneruskan.
 dragAndDropNotSupported=Seret dan lepas tidak disokong untuk imej. Adakah anda mahu mengimport?
 dropboxCharsNotAllowed=Aksara-aksara berikut tidak dibenarkan: \ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=Sesi anda telah tamat. Sila <a target='_blank' hre
 errorSendingFeedback=Ralat menghantar maklum balas.
 errorUpdatingPreview=Ralat mengemaskini pratonton.
 exit=Keluar  
+exitFullscreen=Exit Fullscreen
 exitGroup=Keluar dari Kumpulan
 expand=Kembangkan 
 export=Eksport  

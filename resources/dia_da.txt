@@ -91,6 +91,7 @@ chromeApp=Chrome app
 compressed=Komprimeret
 commitMessage=Commit Besked
 csv=CSV
+dark=Dark
 draftFound=Et udkast for '{1}' blev fundet. Load det i editoren eller kasser det for at fortsætte.
 dragAndDropNotSupported=Drag & drop er ikke understøttet for billeder Vil du importere i stedet?
 dropboxCharsNotAllowed=Følgende tegn er ikke tilladt: \ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=Din session er afsluttet. Gør venligst <a target=
 errorSendingFeedback=Fejl ved afsendelse af feedback.
 errorUpdatingPreview=Fejl ved opdatering af preview.
 exit=Afslut
+exitFullscreen=Exit Fullscreen
 exitGroup=Afslut Gruppe
 expand=Udvid
 export=Eksporter

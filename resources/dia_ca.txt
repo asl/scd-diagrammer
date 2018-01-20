@@ -91,6 +91,7 @@ chromeApp=Aplicació Chrome
 compressed=Comprimit
 commitMessage=Missatge de Commit
 csv=CSV
+dark=Dark
 draftFound=S'ha trobat un esborrany per a '{1}'. Carrega'l a l'editor o descarta'l per continuar.
 dragAndDropNotSupported=Les imatges no es poden arrosegar i amollar. Vols importar-les?
 dropboxCharsNotAllowed=No es permeten aquests caràcters: \ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=La teva sessió ha acabat. Si us plau, <a target='
 errorSendingFeedback=Error en enviar la opinió.
 errorUpdatingPreview=Error pujant la vista prèvia.
 exit=Sortir
+exitFullscreen=Exit Fullscreen
 exitGroup=Sortir del grup
 expand=Amplia
 export=Exporta

@@ -91,6 +91,7 @@ chromeApp=Chrome app
 compressed=Komprimerad
 commitMessage=Skicka meddelande
 csv=CSV
+dark=Dark
 draftFound=Ett utkast för '{1}' har lokaliserats. Ladda utkastet till behandlaren eller ta bort det för att fortsätta.
 dragAndDropNotSupported=Dra-och-släpp tillåts ej för bilder. Vill du istället importera?
 dropboxCharsNotAllowed=Följande tecken får inte användas: \ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=Din session har avslutats. Vänligen <a target='_b
 errorSendingFeedback=Ett fel uppstod vid sändning av feedback.
 errorUpdatingPreview=Ett fel uppstod vid uppdatering av förhandsvisning.
 exit=Avsluta
+exitFullscreen=Exit Fullscreen
 exitGroup=Lämna grupp
 expand=Expandera
 export=Exportera

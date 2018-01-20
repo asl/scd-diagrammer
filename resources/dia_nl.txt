@@ -91,6 +91,7 @@ chromeApp=Chrome App
 compressed=Gecomprimeerd
 commitMessage=Bericht Vastleggen
 csv=CSV
+dark=Dark
 draftFound=Een concept van '{1}' is gevonden. Laad het in de editor of negeer het om door te gaan.
 dragAndDropNotSupported=Slepen en plaatsen is niet beschikbaar voor afbeeldingen. Wilt u in plaats daarvan importeren?
 dropboxCharsNotAllowed=De volgende tekens zijn niet toegestaan: \ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=Uw sessie is verlopen. Graag <a target='_blank' hr
 errorSendingFeedback=Fout bij versturen feedback.
 errorUpdatingPreview=Fout bij bijwerken voorbeeld.
 exit=Afsluiten
+exitFullscreen=Exit Fullscreen
 exitGroup=Groep verlaten
 expand=Uitklappen
 export=Exporteren

@@ -91,6 +91,7 @@ chromeApp=Chrome App
 compressed=Pakitud
 commitMessage=Kinnita sõnum
 csv=CSV
+dark=Dark
 draftFound=Mustand {1} jaoks on leitud. Lae see töötluskeskkonda või tühista jätkamiseks.
 dragAndDropNotSupported=Piltidele puudub pukseerimise tugi. Kas sooviksid selle asemel importida?
 dropboxCharsNotAllowed=Järgnevad tähemärgid pole lubatud:  \ / : ? * " |
@@ -227,6 +228,7 @@ errorSavingFileSessionTimeout=Sessioon on lõppenud. Palun <a target='_blank' hr
 errorSendingFeedback=Viga tagasiside saatmisel.
 errorUpdatingPreview=Viga eelvaate uuendamisel.
 exit=Välju
+exitFullscreen=Exit Fullscreen
 exitGroup=Välju rühmast
 expand=Laienda
 export=Ekspordi
