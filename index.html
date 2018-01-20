@@ -215,7 +215,12 @@
 
     App.DROPBOX_APPKEY = 'pp9eu4pveog9upu';
     DropboxClient.prototype.appPath = '/scdd/';
-    DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
+    // HACK-HACK-HACK
+    if (urlParams['dev'] == '1') {
+        DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
+    } else {
+        DropboxClient.prototype.redirectUri = window.location.href + '/dropbox.html';
+    }
 
     Sidebar.prototype.init = function() {
         // Uses search.xml index file instead (faster load times)
