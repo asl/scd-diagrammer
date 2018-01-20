@@ -207,7 +207,6 @@
     urlParams['tr'] = '0';
     urlParams['gh'] = '0';
     urlParams['gapi'] = '0';
-    urlParams['od'] = '0';
     urlParams['browser'] = '1';
 
     EditorUi.prototype.footerHeight = 0;
@@ -216,10 +215,14 @@
     App.DROPBOX_APPKEY = 'pp9eu4pveog9upu';
     DropboxClient.prototype.appPath = '/scdd/';
     // HACK-HACK-HACK
+    OneDriveClient.prototype.clientId = '8be821df-50ae-4189-8e29-61d981cb8f5a';
+
     if (urlParams['dev'] == '1') {
         DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
+        OneDriveClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/onedrive3.html';
     } else {
         DropboxClient.prototype.redirectUri = window.location.href + '/dropbox.html';
+        OneDriveClient.prototype.redirectUri = window.location.href + '/onedrive3.html';
     }
 
     Sidebar.prototype.init = function() {
