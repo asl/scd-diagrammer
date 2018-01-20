@@ -624,6 +624,7 @@ DriveClient.prototype.getFile = function(id, success, error, readXml, readLibrar
 {
 	readXml = (readXml != null) ? readXml : false;
 	readLibrary = (readLibrary != null) ? readLibrary : false;
+	readXml = true;
 	
 	if (urlParams['rev'] != null)
 	{
@@ -1046,6 +1047,7 @@ DriveClient.prototype.insertFile = function(title, data, folderId, success, erro
 {
 	mimeType = (mimeType != null) ? mimeType : this.mimeType;
 	allowRealtime = (allowRealtime != null) ? allowRealtime : true;
+	allowRealtime = false;
 	
 	var metadata =
 	{
@@ -1093,7 +1095,7 @@ DriveClient.prototype.insertFile = function(title, data, folderId, success, erro
 		}
 		else
 		{
-			success(resp);
+            success(new DriveFile(this.ui, data, resp));
 		}
 	}), error);
 };
