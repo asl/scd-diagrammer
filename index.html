@@ -220,46 +220,48 @@
             (window.location.hostname === 'localhost' || window.location.hostname === PREFIX_HOST);
     };
 
-    // This is epic HACK!
-    var dcProto = DriveClient.prototype;
-    DriveClient = function(editorUi) {
-        mxEventSource.call(this);
+    if (urlParams['offline'] != 1) {
+        // This is epic HACK!
+        var dcProto = DriveClient.prototype;
+        DriveClient = function (editorUi) {
+            mxEventSource.call(this);
 
-        this.ui = editorUi;
+            this.ui = editorUi;
 
-        if (this.ui.editor.chromeless && urlParams['rt'] !== '1') {
-            this.appId = '16689482918';
-            this.clientId = '16689482918-sqlcvimjc6jrv37fh02kvebn03vocdtd.apps.googleusercontent.com';
-            this.scopes = ['https://www.googleapis.com/auth/drive.readonly', 'openid'];
+            if (this.ui.editor.chromeless && urlParams['rt'] !== '1') {
+                this.appId = '16689482918';
+                this.clientId = '16689482918-sqlcvimjc6jrv37fh02kvebn03vocdtd.apps.googleusercontent.com';
+                this.scopes = ['https://www.googleapis.com/auth/drive.readonly', 'openid'];
 
-            // Only used for writing files which is disabled in viewer app
-            this.mimeType = 'all_types_supported';
-        } else if (this.ui.isDriveDomain()) {
-            this.appId = '16689482918';
-            this.clientId = '16689482918-r1v30e1nmm829issjnbvaladif09q2e2.apps.googleusercontent.com';
-            this.mimeType = 'application/vnd.jgraph.mxfile.realtime';
+                // Only used for writing files which is disabled in viewer app
+                this.mimeType = 'all_types_supported';
+            } else if (this.ui.isDriveDomain()) {
+                this.appId = '16689482918';
+                this.clientId = '16689482918-r1v30e1nmm829issjnbvaladif09q2e2.apps.googleusercontent.com';
+                this.mimeType = 'application/vnd.jgraph.mxfile.realtime';
+            }
+
+            this.mimeTypes = 'application/mxe,application/vnd.jgraph.mxfile,' +
+                'application/mxr,application/vnd.jgraph.mxfile.realtime,' +
+                'application/vnd.jgraph.mxfile.rtlegacy';
+        };
+        DriveClient.prototype = dcProto;
+
+
+        App.DROPBOX_APPKEY = 'pp9eu4pveog9upu';
+        DropboxClient.prototype.appPath = '/scdd/';
+        // HACK-HACK-HACK
+        OneDriveClient.prototype.clientId = '8be821df-50ae-4189-8e29-61d981cb8f5a';
+
+        if (urlParams['dev'] == '1') {
+            DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
+            OneDriveClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/onedrive3.html';
+            DriveClient.prototype.newAppHostname = window.location.href;
+        } else {
+            DropboxClient.prototype.redirectUri = PREFIX + 'dropbox.html';
+            OneDriveClient.prototype.redirectUri = PREFIX + 'onedrive3.html';
+            DriveClient.prototype.newAppHostname = PREFIX;
         }
-
-        this.mimeTypes = 'application/mxe,application/vnd.jgraph.mxfile,' +
-            'application/mxr,application/vnd.jgraph.mxfile.realtime,' +
-            'application/vnd.jgraph.mxfile.rtlegacy';
-    };
-    DriveClient.prototype = dcProto;
-
-
-    App.DROPBOX_APPKEY = 'pp9eu4pveog9upu';
-    DropboxClient.prototype.appPath = '/scdd/';
-    // HACK-HACK-HACK
-    OneDriveClient.prototype.clientId = '8be821df-50ae-4189-8e29-61d981cb8f5a';
-
-    if (urlParams['dev'] == '1') {
-        DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
-        OneDriveClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/onedrive3.html';
-        DriveClient.prototype.newAppHostname = window.location.href;
-    } else {
-        DropboxClient.prototype.redirectUri = PREFIX + 'dropbox.html';
-        OneDriveClient.prototype.redirectUri = PREFIX + 'onedrive3.html';
-        DriveClient.prototype.newAppHostname = PREFIX;
     }
 
     Sidebar.prototype.init = function() {
@@ -331,7 +333,7 @@
         mxUtils.br(div);
 
         var v = document.createElement('small');
-        v.innerHTML = 'rev 4a05a18';
+        v.innerHTML = 'rev 70f6418';
         v.style.color = '#505050';
         div.appendChild(v);
 
