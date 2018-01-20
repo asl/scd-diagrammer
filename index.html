@@ -228,8 +228,8 @@
         this.ui = editorUi;
 
         if (this.ui.editor.chromeless && urlParams['rt'] !== '1') {
-            this.appId = '850530949725';
-            this.clientId = '850530949725.apps.googleusercontent.com';
+            this.appId = '16689482918';
+            this.clientId = '16689482918-sqlcvimjc6jrv37fh02kvebn03vocdtd.apps.googleusercontent.com';
             this.scopes = ['https://www.googleapis.com/auth/drive.readonly', 'openid'];
 
             // Only used for writing files which is disabled in viewer app
@@ -255,7 +255,7 @@
     if (urlParams['dev'] == '1') {
         DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
         OneDriveClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/onedrive3.html';
-        DriveClient.prototype.newAppHostname = 'localhost:63342/scd-diagrammer/src/index.html?dev=1'; //window.location.href;
+        DriveClient.prototype.newAppHostname = window.location.href;
     } else {
         DropboxClient.prototype.redirectUri = PREFIX + 'dropbox.html';
         OneDriveClient.prototype.redirectUri = PREFIX + 'onedrive3.html';
@@ -331,7 +331,7 @@
         mxUtils.br(div);
 
         var v = document.createElement('small');
-        v.innerHTML = 'rev 4a28538';
+        v.innerHTML = 'rev edf14c9';
         v.style.color = '#505050';
         div.appendChild(v);
 
