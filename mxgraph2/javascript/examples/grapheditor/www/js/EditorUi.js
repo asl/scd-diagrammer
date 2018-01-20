@@ -2579,6 +2579,12 @@ ChangePageSetup.prototype.execute = function()
 			this.previousFormat = tmp;
 		}
 	}
+
+    if (this.foldingEnabled != null && this.foldingEnabled != this.ui.editor.graph.foldingEnabled)
+    {
+    		this.ui.setFoldingEnabled(this.foldingEnabled);
+        this.foldingEnabled = !this.foldingEnabled;
+    }
 };
 
 // Registers codec for ChangePageSetup
@@ -2586,20 +2592,20 @@ ChangePageSetup.prototype.execute = function()
 {
 	var codec = new mxObjectCodec(new ChangePageSetup(),  ['ui', 'previousColor', 'previousImage', 'previousFormat']);
 
-	/**
-	 * Function: afterDecode
-	 *
-	 * Restores the state by assigning the previous value.
-	 */
 	codec.afterDecode = function(dec, node, obj)
 	{
 		obj.previousColor = obj.color;
 		obj.previousImage = obj.image;
 		obj.previousFormat = obj.format;
 
+        if (obj.foldingEnabled != null)
+        {
+        		obj.foldingEnabled = !obj.foldingEnabled;
+        }
+       
 		return obj;
 	};
-
+	
 	mxCodecRegistry.register(codec);
 })();
 
@@ -2959,7 +2965,7 @@ EditorUi.prototype.createDivs = function()
 	this.menubarContainer = this.createDiv('geMenubarContainer');
 	this.toolbarContainer = this.createDiv('geToolbarContainer');
 	this.sidebarContainer = this.createDiv('geSidebarContainer');
-	this.formatContainer = this.createDiv('geSidebarContainer');
+	this.formatContainer = this.createDiv('geSidebarContainer geFormatContainer');
 	this.diagramContainer = this.createDiv('geDiagramContainer');
 	this.footerContainer = this.createDiv('geFooterContainer');
 	this.hsplit = this.createDiv('geHsplit');
@@ -2980,13 +2986,6 @@ EditorUi.prototype.createDivs = function()
 	this.footerContainer.style.bottom = '0px';
 	this.footerContainer.style.zIndex = mxPopupMenu.prototype.zIndex - 2;
 	this.hsplit.style.width = this.splitSize + 'px';
-	
-	// Only vertical scrollbars, no background in format sidebar
-	this.formatContainer.style.backgroundColor = 'whiteSmoke';
-	this.formatContainer.style.overflowX = 'hidden';
-	this.formatContainer.style.overflowY = 'auto';
-	this.formatContainer.style.fontSize = '12px';
-	
 	this.sidebarFooterContainer = this.createSidebarFooterContainer();
 	
 	if (this.sidebarFooterContainer)
