@@ -206,14 +206,47 @@
 <script type="text/javascript">
     urlParams['tr'] = '0';
     urlParams['gh'] = '0';
-    urlParams['gapi'] = '0';
     urlParams['browser'] = '1';
-    PREFIX = 'https://asl.github.io/scd-diagrammer/'
+    PREFIX_HOST = 'asl.github.io';
+    PREFIX_PATH = PREFIX_HOST + '/scd_diagrammer/';
+    PREFIX = 'https://' + PREFIX_PATH;
 
     EditorUi.prototype.footerHeight = 0;
     App.prototype.enableLogging = false;
 
     // Integrations
+    App.prototype.isDriveDomain = function() {
+        return urlParams['drive'] !== '0' &&
+            (window.location.hostname === 'localhost' || window.location.hostname === PREFIX_HOST);
+    };
+
+    // This is epic HACK!
+    var dcProto = DriveClient.prototype;
+    DriveClient = function(editorUi) {
+        mxEventSource.call(this);
+
+        this.ui = editorUi;
+
+        if (this.ui.editor.chromeless && urlParams['rt'] !== '1') {
+            this.appId = '850530949725';
+            this.clientId = '850530949725.apps.googleusercontent.com';
+            this.scopes = ['https://www.googleapis.com/auth/drive.readonly', 'openid'];
+
+            // Only used for writing files which is disabled in viewer app
+            this.mimeType = 'all_types_supported';
+        } else if (this.ui.isDriveDomain()) {
+            this.appId = '16689482918';
+            this.clientId = '16689482918-r1v30e1nmm829issjnbvaladif09q2e2.apps.googleusercontent.com';
+            this.mimeType = 'application/vnd.jgraph.mxfile.realtime';
+        }
+
+        this.mimeTypes = 'application/mxe,application/vnd.jgraph.mxfile,' +
+            'application/mxr,application/vnd.jgraph.mxfile.realtime,' +
+            'application/vnd.jgraph.mxfile.rtlegacy';
+    };
+    DriveClient.prototype = dcProto;
+
+
     App.DROPBOX_APPKEY = 'pp9eu4pveog9upu';
     DropboxClient.prototype.appPath = '/scdd/';
     // HACK-HACK-HACK
@@ -222,9 +255,11 @@
     if (urlParams['dev'] == '1') {
         DropboxClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/dropbox.html';
         OneDriveClient.prototype.redirectUri = window.location.href.split('/').slice(0, -1).join('/') + '/onedrive3.html';
+        DriveClient.prototype.newAppHostname = 'localhost:63342/scd-diagrammer/src/index.html?dev=1'; //window.location.href;
     } else {
         DropboxClient.prototype.redirectUri = PREFIX + 'dropbox.html';
         OneDriveClient.prototype.redirectUri = PREFIX + 'onedrive3.html';
+        DriveClient.prototype.newAppHostname = PREFIX;
     }
 
     Sidebar.prototype.init = function() {
