@@ -64,6 +64,16 @@
 		}
 	</style>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112827044-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-112827044-1');
+    </script>
+
     <!-- Workaround for binary XHR in IE 9/10, see App.loadUrl -->
 	<!--[if (IE 9)|(IE 10)]><!-->
 		<script type="text/vbscript">
@@ -333,7 +343,7 @@
         mxUtils.br(div);
 
         var v = document.createElement('small');
-        v.innerHTML = 'rev 70f6418';
+        v.innerHTML = 'rev a340763';
         v.style.color = '#505050';
         div.appendChild(v);
 
