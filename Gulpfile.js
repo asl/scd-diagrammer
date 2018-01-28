@@ -112,6 +112,7 @@ var DRAWIO_VERSION =fs.readFileSync(
 
 var gitrev = git.short();
 log("Building from git revision " + gitrev);
+log("draw.io version " + DRAWIO_VERSION);
 
 gulp.task('deploy', function() {
     return gulp.src(path.join(bases.dist, '/**/*'))
